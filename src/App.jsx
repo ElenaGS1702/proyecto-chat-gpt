@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { SendHorizontal } from "lucide-react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const sendMessage = () => {
+    console.log("Sending message:", input);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex flex-col h-screen w-full bg-gray-900 text-white justify-end">
+      <div className="flex-1 overflow-y-auto p-4 space-y-2 flex flex-col">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`max-w-xs px-4 py-2 rounded-lg ${
+              msg.sender === "user"
+                ? "bg-blue-600 self-end"
+                : "bg-gray-700 self-start"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <div className="p-4 flex items-center bg-gray-800">
+        <input
+          type="text"
+          className="flex-1 p-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+        />
+        <button
+          className="ml-2 p-2 bg-blue-600 rounded-lg"
+          onClick={sendMessage}
+        >
+          <SendHorizontal size={20} />
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
